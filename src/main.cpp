@@ -18,8 +18,11 @@ using namespace std;
 
 int displayMainMenu()
 {
-
+  // Declare and initialize the user option.
   int menuOption = 0;
+
+  // Create the user input.
+  string userInput;
 
   cout << "**********************************************************" << endl;
   cout << "***************** Airgead Banking App ********************" << endl;
@@ -29,18 +32,32 @@ int displayMainMenu()
   cout << "** 3 - View Investment Report with Monthly Deposit.     **" << endl;
   cout << "** 4 - Exit                                             **" << endl;
   cout << "**********************************************************" << endl;
+  cout << "User Selection: ";
 
   try
   {
 
     // Get the user input within the trycatch
-    cin >> menuOption;
+    getline(cin, userInput);
+
+    // Place a new line after the user input.
+    cout << endl;
+
+    // Validate and parse the user input.
+    if (userInput.size() == 1 && isdigit(userInput.at(0)))
+    {
+      // substracting the asci value from 48 gives you the value entered by the user. 
+      menuOption = userInput.at(0) - 48;
+    }else{
+      cout << "Invalid user input input: [" << userInput << "]." << endl;
+    }
   }
   catch (exception &e)
   {
-    cout << "Invalid input: " << e.what() << endl;
+    cout << "Unrecognized user input." << endl;
   }
 
+  cout << "**********************************************************" << endl;
   return menuOption;
 }
 
@@ -70,7 +87,9 @@ int main()
     // Get the user option from the main menu
     option = displayMainMenu();
 
-  } while (option > 0 && option < 5);
+  } while (option != 4);
+
+  cout << "Goodbye!" << endl;
 
   return 0;
 }
