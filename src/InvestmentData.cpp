@@ -1,7 +1,7 @@
 /**
  * @file InvestmentData.cpp
  * @author Winston Spencer
- * @brief The Airgead Banking Application Investment Data class implementation
+ * @brief The Airgead Banking Application Investment Data Class Implementation
  * @version 0.1
  * @date 2021-02-02
  * 
