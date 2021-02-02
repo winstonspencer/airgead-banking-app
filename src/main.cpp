@@ -155,18 +155,27 @@ InvestmentData *collectInvestmentData()
   return investmentData;
 }
 
-void displayMonthyReport(bool t_useMonthlyDeposit)
+void displayMonthyReport(InvestmentData &investmentData, bool t_useMonthlyDeposit)
 {
 
+  int months = investmentData.getYears() * 12;
   cout << "**********************************************************" << endl;
-  cout << "**                Airgead Banking App                   **" << endl;
+
+  if (t_useMonthlyDeposit)
+  {
+    cout << "**  Airgead Banking App: Monthly Report with Deposit **" << endl;
+  }
+  else
+  {
+    cout << "**  Airgead Banking App: Monthly Report without Deposit **" << endl;
+  }
   cout << "**********************************************************" << endl;
-  cout << "** 1 - Enter Investment Data                            **" << endl;
-  cout << "** 2 - View Investment Report without Monthly Deposit.  **" << endl;
-  cout << "** 3 - View Investment Report with Monthly Deposit.     **" << endl;
-  cout << "** 4 - Exit                                             **" << endl;
+
+  for(int i=0; i<months; ++i){
+    cout << (i+1) << investmentData.calculateMonthlyBalance(t_useMonthlyDeposit) << endl;
+  }
+
   cout << "**********************************************************" << endl;
-  cout << "User Selection: ";
 }
 
 /**
