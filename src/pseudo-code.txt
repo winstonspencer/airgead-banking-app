@@ -1,0 +1,30 @@
+Pseudo Code for Airgead Banking Application
+
+  Display the Main Menu
+
+    1 - Enter Investment Data
+    2 - Display Investment Monthly Report without Monthly Deposits
+    3 - Display Investment Monthly Report with Monthly Deposits
+    4 - Exit Application
+
+  If the user selects option 1
+    Display the screen to collect the user data.
+      Collect Initial Investment Amount
+      Collect Monthly Deposit
+      Collect Annual Interest
+      Collect number of years
+      Press any key to continue ( this will take the user back to the main menu)
+  
+  If the user selects option 2
+    Calculate the monthly interests without the deplosits for the specified number of (years * 12)
+    Store the data in a InvestmentReport
+    call a method to display the data in the InvestmentReport
+
+  If the user selects option 3
+    Calculate the monthly interests with the deplosits for the specified number of (years * 12)
+    Store the data in a InvestmentReport
+    call a method to display the data in the InvestmentReport
+
+  If the user selects option 4
+    Exit the application
+
