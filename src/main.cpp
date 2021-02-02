@@ -12,9 +12,60 @@
 // Import required libraries
 #include <exception>
 #include <iostream>
+#include "InvestmentData.cpp"
 
 // Use the standard namespance (std)
 using namespace std;
+
+/**
+ * @brief Collects the user input and converts it to a double
+ *        the method returns 1 for invalid results.
+ * 
+ */
+void collectUserInput(string userPrompt, int &value)
+{
+  // Create the user input.
+  string userInput;
+
+  try
+  {
+    cout << userPrompt;
+
+    // Get the user input within the trycatch
+    getline(cin, userInput);
+    value = stoi(userInput);
+    cout << endl;
+  }
+  catch (exception &e)
+  {
+    value = 1;
+  }
+}
+
+/**
+ * @brief Collects the user input and converts it to a double
+ *        the method returns 0.0 for invalid results.
+ * 
+ */
+void collectUserInput(string userPrompt, double &value)
+{
+  // Create the user input.
+  string userInput;
+
+  try
+  {
+    cout << userPrompt;
+
+    // Get the user input within the trycatch
+    getline(cin, userInput);
+    value = stod(userInput);
+    cout << endl;
+  }
+  catch (exception &e)
+  {
+    value = 0.0;
+  }
+}
 
 int displayMainMenu()
 {
@@ -25,7 +76,7 @@ int displayMainMenu()
   string userInput;
 
   cout << "**********************************************************" << endl;
-  cout << "***************** Airgead Banking App ********************" << endl;
+  cout << "**                Airgead Banking App                   **" << endl;
   cout << "**********************************************************" << endl;
   cout << "** 1 - Enter Investment Data                            **" << endl;
   cout << "** 2 - View Investment Report without Monthly Deposit.  **" << endl;
@@ -46,9 +97,11 @@ int displayMainMenu()
     // Validate and parse the user input.
     if (userInput.size() == 1 && isdigit(userInput.at(0)))
     {
-      // substracting the asci value from 48 gives you the value entered by the user. 
+      // substracting the asci value from 48 gives you the value entered by the user.
       menuOption = userInput.at(0) - 48;
-    }else{
+    }
+    else
+    {
       cout << "Invalid user input input: [" << userInput << "]." << endl;
     }
   }
@@ -61,12 +114,59 @@ int displayMainMenu()
   return menuOption;
 }
 
-void collectInvestmentData()
+InvestmentData *collectInvestmentData()
 {
+  // Declare variables
+  int years;
+  string userInput;
+  double annualInterest;
+  double monthlyDepositAmount;
+  double initialInvestmentAmount;
+  InvestmentData *investmentData = NULL;
+
+  try
+  {
+
+    cout << "**********************************************************" << endl;
+    cout << "** Airgead Banking App: Investment Data                 **" << endl;
+    cout << "**********************************************************" << endl;
+
+    cout << "";
+
+    // Get the user input within the trycatch
+    collectUserInput("** Enter Initial Investment Amount: ", initialInvestmentAmount);
+    collectUserInput("** Enter Monthly Deposit Amount: ", monthlyDepositAmount);
+    collectUserInput("** Enter Initial Annual Interest: ", annualInterest);
+    collectUserInput("** Enter Years: ", years);
+
+    investmentData = new InvestmentData(initialInvestmentAmount, monthlyDepositAmount, annualInterest, years);
+
+    cout << "**********************************************************" << endl;
+
+    // Place a new line after the user input.
+    cout << endl;
+  }
+  catch (exception &e)
+  {
+    cout << "Unrecognized user input." << endl;
+  }
+
+  cout << "**********************************************************" << endl;
+  return investmentData;
 }
 
 void displayMonthyReport(bool t_useMonthlyDeposit)
 {
+
+  cout << "**********************************************************" << endl;
+  cout << "**                Airgead Banking App                   **" << endl;
+  cout << "**********************************************************" << endl;
+  cout << "** 1 - Enter Investment Data                            **" << endl;
+  cout << "** 2 - View Investment Report without Monthly Deposit.  **" << endl;
+  cout << "** 3 - View Investment Report with Monthly Deposit.     **" << endl;
+  cout << "** 4 - Exit                                             **" << endl;
+  cout << "**********************************************************" << endl;
+  cout << "User Selection: ";
 }
 
 /**
@@ -79,14 +179,31 @@ int main()
 
   // Decleare the option variable
   int option;
+  InvestmentData *investmentData = NULL;
 
   // While the option is not 1 - 4 display the menu
   do
   {
-
     // Get the user option from the main menu
     option = displayMainMenu();
 
+    if (option == 1)
+    {
+      investmentData = collectInvestmentData();
+    }
+    else if (option == 2)
+    {
+      displayMonthyReport(false);
+    }
+    else if (option == 3)
+    {
+      displayMonthyReport(true);
+    }
+
+    // Call the InvestmentData deconstructor
+    delete investmentData;
+
+    // Exit the application when the option is 4.
   } while (option != 4);
 
   cout << "Goodbye!" << endl;
