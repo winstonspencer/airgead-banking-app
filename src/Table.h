@@ -45,9 +45,31 @@ private:
   Row m_header;
   vector<Row> m_rows;
   
+  /**
+   * @brief Print the table row dividers
+   * 
+   * @param t_header true is the current row is a header row else false.
+   */
   void printDiv(bool t_header);
+
+  /**
+   * @brief Prints the current row
+   * 
+   * @param t_header  true is the current row is a header row else false.
+   * @param t_row the row to print.
+   */
   void printRow(bool t_header, Row t_row);
+
+  /**
+   * @brief Prints the header row.
+   * 
+   */
   void printHeader();
+
+  /**
+   * @brief Prints the table body.
+   * 
+   */
   void printBody();
 
 public:

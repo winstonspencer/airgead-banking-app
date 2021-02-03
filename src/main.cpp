@@ -179,15 +179,15 @@ void displayReport(InvestmentData &investmentData, bool t_useMonthlyDeposit)
     for (int i = 0; i < investmentData.getYears(); ++i)
     {
       Row row;
-      row.addColumn(Column(to_string(i + 1)));
+      row.addColumn(Column(i + 1));
 
       for (int i = 0; i < 12; i++)
       {
         totalBalance = investmentData.calculateMonthlyBalance(totalBalance, t_useMonthlyDeposit);
       }
 
-      row.addColumn(Column(to_string(fabs(totalBalance))));
-      row.addColumn(Column(to_string(fabs(investmentData.getAnnualInterestRate()))));
+      row.addColumn(Column(fabs(totalBalance)));
+      row.addColumn(Column(fabs(investmentData.getAnnualInterestRate())));
       table.addRow(row);
     }
 

@@ -82,7 +82,6 @@ void Table::addHeader(Column t_columns[])
 void Table::addRow(Row t_row)
 {
   this->m_rows.push_back(t_row);
-
   return;
 }
 
@@ -127,6 +126,11 @@ void Table::clear()
   this->m_rows.clear();
 }
 
+/**
+ * @brief Print the table row dividers
+ * 
+ * @param t_header true is the current row is a header row else false.
+ */
 void Table::printDiv(bool header)
 {
   if (header)
@@ -141,6 +145,12 @@ void Table::printDiv(bool header)
   return;
 }
 
+/**
+ * @brief Prints the current row
+ * 
+ * @param t_header  true is the current row is a header row else false.
+ * @param t_row the row to print.
+ */
 void Table::printRow(bool t_header, Row t_row)
 {
   Column column;
@@ -149,7 +159,7 @@ void Table::printRow(bool t_header, Row t_row)
   for (int i = 0; i < t_row.getLength(); ++i)
   {
     column = t_row.getColumn(i);
-    cout << fixed << left << setw(this->m_columnWidth) << setfill(this->m_filler) << column.getValue();
+    cout << left << setw(this->m_columnWidth) << setfill(this->m_filler) << column.getValue();
 
     if (i < (t_row.getLength() - 1))
     {
@@ -163,12 +173,20 @@ void Table::printRow(bool t_header, Row t_row)
   return;
 }
 
+/**
+ * @brief Prints the header row.
+ * 
+ */
 void Table::printHeader()
 {
 
   this->printRow(true, this->m_header);
 }
 
+/**
+ * @brief Prints the table body.
+ * 
+ */
 void Table::printBody()
 {
   for (int i = 0; i < this->m_rows.size(); ++i)
