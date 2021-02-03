@@ -10,9 +10,13 @@
  */
 
 // Import required libraries
+#include <string>
+#include <memory>
 #include <exception>
 #include <iostream>
-#include "InvestmentData.cpp"
+#include <iomanip>
+#include "InvestmentData.h"
+#include "Table.h"
 
 // Use the standard namespance (std)
 using namespace std;
@@ -75,14 +79,14 @@ int displayMainMenu()
   // Create the user input.
   string userInput;
 
-  cout << "**********************************************************" << endl;
-  cout << "**                Airgead Banking App                   **" << endl;
-  cout << "**********************************************************" << endl;
-  cout << "** 1 - Enter Investment Data                            **" << endl;
-  cout << "** 2 - View Investment Report without Monthly Deposit.  **" << endl;
-  cout << "** 3 - View Investment Report with Monthly Deposit.     **" << endl;
-  cout << "** 4 - Exit                                             **" << endl;
-  cout << "**********************************************************" << endl;
+  cout << "*************************************************************" << endl;
+  cout << "**                Airgead Banking App                      **" << endl;
+  cout << "*************************************************************" << endl;
+  cout << "** 1 - Enter Investment Data                               **" << endl;
+  cout << "** 2 - View Investment Report without Monthly Deposit.     **" << endl;
+  cout << "** 3 - View Investment Report with Monthly Deposit.        **" << endl;
+  cout << "** 4 - Exit                                                **" << endl;
+  cout << "*************************************************************" << endl;
   cout << "User Selection: ";
 
   try
@@ -110,11 +114,11 @@ int displayMainMenu()
     cout << "Unrecognized user input." << endl;
   }
 
-  cout << "**********************************************************" << endl;
+  cout << "*************************************************************" << endl;
   return menuOption;
 }
 
-InvestmentData *collectInvestmentData()
+void collectInvestmentData(InvestmentData &investmentData)
 {
   // Declare variables
   int years;
@@ -122,14 +126,13 @@ InvestmentData *collectInvestmentData()
   double annualInterest;
   double monthlyDepositAmount;
   double initialInvestmentAmount;
-  InvestmentData *investmentData = NULL;
 
   try
   {
 
-    cout << "**********************************************************" << endl;
-    cout << "** Airgead Banking App: Investment Data                 **" << endl;
-    cout << "**********************************************************" << endl;
+    cout << "*************************************************************" << endl;
+    cout << "** Airgead Banking App: Investment Data                    **" << endl;
+    cout << "*************************************************************" << endl;
 
     cout << "";
 
@@ -139,9 +142,12 @@ InvestmentData *collectInvestmentData()
     collectUserInput("** Enter Initial Annual Interest: ", annualInterest);
     collectUserInput("** Enter Years: ", years);
 
-    investmentData = new InvestmentData(initialInvestmentAmount, monthlyDepositAmount, annualInterest, years);
+    investmentData.setInitialInvestmentAmount(initialInvestmentAmount);
+    investmentData.setMonthlyDepositAmount(monthlyDepositAmount);
+    investmentData.setAnnualInterestRate(annualInterest);
+    investmentData.setYears(years);
 
-    cout << "**********************************************************" << endl;
+    cout << "*************************************************************" << endl;
 
     // Place a new line after the user input.
     cout << endl;
@@ -151,31 +157,73 @@ InvestmentData *collectInvestmentData()
     cout << "Unrecognized user input." << endl;
   }
 
-  cout << "**********************************************************" << endl;
-  return investmentData;
+  cout << "*************************************************************" << endl;
+
+  return;
 }
 
 void displayMonthyReport(InvestmentData &investmentData, bool t_useMonthlyDeposit)
 {
 
-  int months = investmentData.getYears() * 12;
-  cout << "**********************************************************" << endl;
+  // Declare function variables
+  Table table;;
+
+  try
+  {
+    table.addHeader(new Column("YEAR"));
+    table.addHeader(new Column("BALANCE"));
+    table.addHeader(new Column("YEARLY INTEREST"));
+
+    table.display();
+  }
+  catch (exception &e)
+  {
+      cout << "Error printing our monthly investment report." << e.what() << endl;
+  }
+
+  /*
+  const char separator = ' ';
+  const char headerLineChar = '=';
+  const char bodyLineChar = '-';
+  const int columnWidth = 19;
+  double openingBalance = 0.0;
+  string headerLine(70, headerLineChar);
+  string bodyLineLine(64, bodyLineChar);
+
+  cout << headerLine << endl;
+  cout << left << setw(4) << setfill(separator) << "==";
 
   if (t_useMonthlyDeposit)
   {
-    cout << "**  Airgead Banking App: Monthly Report with Deposit **" << endl;
+    cout << left << setw(56) << setfill(separator) << "Airgead Banking: Yearly Balance w/o Monthly Deposit";
   }
   else
   {
-    cout << "**  Airgead Banking App: Monthly Report without Deposit **" << endl;
+    cout << left << setw(56) << setfill(separator) << "Airgead Banking: with Balance w/o Monthly Deposit";
   }
-  cout << "**********************************************************" << endl;
+  cout << right << setw(4) << setfill(separator) << "==";
+  cout << endl;
 
-  for(int i=0; i<months; ++i){
-    cout << (i+1) << investmentData.calculateMonthlyBalance(t_useMonthlyDeposit) << endl;
+  cout << bodyLineLine << endl;
+  cout << left << setw(4) << setfill(separator) << "--";
+  cout << left << setw(columnWidth) << setfill(separator) << "YEAR";
+  cout << left << setw(columnWidth) << setfill(separator) << "BALANCE";
+  cout << left << setw(columnWidth) << setfill(separator) << "YEARLY INTEREST";
+  cout << right << setw(4) << setfill(separator) << "--";
+  cout << endl;
+  cout << bodyLineLine << endl;
+
+  for (int i = 0; i < investmentData.getYears(); ++i)
+  {
+    cout << left << setw(columnWidth) << setfill(separator) << (i + 1);
+    cout << left << setw(columnWidth) << setfill(separator) << investmentData.calculateMonthlyBalance(openingBalance, t_useMonthlyDeposit) ;
+    cout << left << setw(columnWidth) << setfill(separator) << investmentData.getAnnualInterestRate();
   }
 
-  cout << "**********************************************************" << endl;
+  cout << headerLine << endl;
+  */
+
+  return;
 }
 
 /**
@@ -189,22 +237,17 @@ int main()
   // Decleare all function variables.
   int option;
   bool initialPass = true;
-  InvestmentData *investmentData = NULL;
+  auto investmentData = make_unique<InvestmentData>();
 
   // While the option is not 1 - 4 display the menu
   do
   {
-
-    if(!initialPass){
-      cin.ignore();
-    }
-
     // Get the user option from the main menu
     option = displayMainMenu();
 
     if (option == 1)
     {
-      investmentData = collectInvestmentData();
+      collectInvestmentData(*investmentData);
     }
     else if (option == 2)
     {
@@ -214,9 +257,6 @@ int main()
     {
       displayMonthyReport(*investmentData, true);
     }
-
-    // Call the InvestmentData deconstructor
-    delete investmentData;
 
     initialPass = false;
 

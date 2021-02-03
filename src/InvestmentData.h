@@ -13,7 +13,7 @@
 #define AIRGEAD_BANKING_SRC_INVESTMENT_DATA_H_
 
 /**
- * @brief The immutable class InvestmentData holds the investment data provided by the user.
+ * @brief The class InvestmentData holds the investment data provided by the user.
  * 
  */
 class InvestmentData
@@ -37,10 +37,10 @@ private:
   double m_monthlyDeplositAmount;
 
   /**
-   * @brief The annual interest provided by the user
+   * @brief The annual interest rate provided by the user
    * 
    */
-  double m_annualInterest;
+  double m_annualInterestRate;
 
   /**
    * @brief The number of years the investment will be gaining interest provided by the user
@@ -50,7 +50,7 @@ private:
 
   /**
    * @brief Calaculates the monthly interest rate.
-   *        The rate is calculated as: (Interest Rate/100)/12
+   *        The rate is calculated as: (m_annualInterestRate/100)/12
    * 
    * @return double 
    */
@@ -61,16 +61,10 @@ private:
    * 
    */
 public:
-
   /**
    * @brief Construct a new Investment Data object
-   * 
-   * @param t_initailInvestmentAmount The intiail investment amount
-   * @param t_monthlyDeplositAmount The monthly deplosit mount
-   * @param t_annualInterest The annual interest
-   * @param t_years The number of years interest will applied to the investment 
    */
-  InvestmentData(double t_initailInvestmentAmount, double t_monthlyDeplositAmount, double t_annualInterest, int t_years);
+  InvestmentData();
 
   /**
    * @brief Destroy the Investment Data object
@@ -93,11 +87,11 @@ public:
   double getMonthlyDepositAmount();
 
   /**
-   * @brief Get the Annual Interest
+   * @brief Get the Annual Interest Rate
    * 
    * @return double 
    */
-  double getAnnualInterest();
+  double getAnnualInterestRate();
 
   /**
    * @brief Get the number of Years
@@ -107,15 +101,45 @@ public:
   int getYears();
 
   /**
-   * @brief Calaculates the monthly balance The rate is calculated as: 
-   *          (Opening Amount + Deposited Amount) * calculateMonthlyInterestRate()
+   * @brief Set the Initial Investment Amount object
+   * 
+   * @param t_initialInvestmentAmount the initial investment amount
+   */
+  void setInitialInvestmentAmount(double t_initialInvestmentAmount);
+
+  /**
+   * @brief Set the Monthly Deposit Amount object
+   * 
+   * @param t_monthlyDeplositAmount the Monthly Deposit Amount object
+   */
+  void setMonthlyDepositAmount(double t_monthlyDeplositAmount);
+
+  /**
+   * @brief Set the Annual Interest Rate
+   * 
+   * @param t_annualInterestRate the Annual Interest rate
+   */
+  void setAnnualInterestRate(double t_annualInterestRate);
+
+  /**
+   * @brief Set the Years
+   * 
+   * @param years the Years
+   */
+  void setYears(int years);
+
+  /**
+   * @brief Calaculates the monthly balance as: 
+   *          (Opening Balance + Deposited Amount) * calculateMonthlyInterestRate()
    * 
    * @param t_useMonthlyAmount Determines if the monthly amount should be used when 
    *                           calculating the balance
+   * 
+   * @param t_openingBalance The opening balance
+   * 
    * @return double 
    */
-  double calculateMonthlyBalance(bool t_useMonthlyAmount);
-
+  double calculateMonthlyBalance(double t_openingBalance, bool t_useMonthlyAmount);
 };
 
 #endif
