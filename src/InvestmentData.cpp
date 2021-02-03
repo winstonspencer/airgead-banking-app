@@ -132,16 +132,20 @@ void InvestmentData::setYears(int t_years)
 double InvestmentData::calculateMonthlyBalance(double t_openingBalance, bool t_useMonthlyAmount)
 {
   // Declare and Initialize the monthly balance variable
-  double monthlyBalance = 0.0;
+  double monthlyBalance = t_openingBalance;
+  ;
   double interest = this->calculateMonthlyInterestRate();
 
-  if (fabs(interest) < 0.0001)
+  if (fabs(interest) > 0.0001)
   {
-    monthlyBalance = t_openingBalance;
-  }
-  else
-  {
-    monthlyBalance = monthlyBalance + (t_openingBalance * this->calculateMonthlyInterestRate());
+    if (t_useMonthlyAmount)
+    {
+      monthlyBalance = (monthlyBalance + this->m_monthlyDeplositAmount) + (monthlyBalance * this->calculateMonthlyInterestRate());
+    }
+    else
+    {
+      monthlyBalance = monthlyBalance + (monthlyBalance * this->calculateMonthlyInterestRate());
+    }
   }
 
   // Return the calculated monthly balance.

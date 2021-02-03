@@ -149,7 +149,7 @@ void Table::printRow(bool t_header, Row t_row)
   for (int i = 0; i < t_row.getLength(); ++i)
   {
     column = t_row.getColumn(i);
-    cout << left << setw(this->m_columnWidth) << setfill(this->m_filler) << column.getValue();
+    cout << fixed << left << setw(this->m_columnWidth) << setfill(this->m_filler) << column.getValue();
 
     if (i < (t_row.getLength() - 1))
     {

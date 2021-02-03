@@ -10,11 +10,12 @@
  */
 
 // Import required libraries
+#include <cmath>
 #include <string>
 #include <memory>
-#include <exception>
-#include <iostream>
 #include <iomanip>
+#include <iostream>
+#include <exception>
 #include "InvestmentData.h"
 #include "Table.h"
 
@@ -162,66 +163,40 @@ void collectInvestmentData(InvestmentData &investmentData)
   return;
 }
 
-void displayMonthyReport(InvestmentData &investmentData, bool t_useMonthlyDeposit)
+void displayReport(InvestmentData &investmentData, bool t_useMonthlyDeposit)
 {
-
   // Declare function variables
-  Table table;;
+  double totalBalance;
+  Table table;
 
   try
   {
+    totalBalance = investmentData.getInitialInvestmentAmount();
     table.addHeader(new Column("YEAR"));
     table.addHeader(new Column("BALANCE"));
     table.addHeader(new Column("YEARLY INTEREST"));
+
+    for (int i = 0; i < investmentData.getYears(); ++i)
+    {
+      Row row;
+      row.addColumn(Column(to_string(i + 1)));
+
+      for (int i = 0; i < 12; i++)
+      {
+        totalBalance = investmentData.calculateMonthlyBalance(totalBalance, t_useMonthlyDeposit);
+      }
+
+      row.addColumn(Column(to_string(fabs(totalBalance))));
+      row.addColumn(Column(to_string(fabs(investmentData.getAnnualInterestRate()))));
+      table.addRow(row);
+    }
 
     table.display();
   }
   catch (exception &e)
   {
-      cout << "Error printing our monthly investment report." << e.what() << endl;
+    cout << "Error printing our monthly investment report." << e.what() << endl;
   }
-
-  /*
-  const char separator = ' ';
-  const char headerLineChar = '=';
-  const char bodyLineChar = '-';
-  const int columnWidth = 19;
-  double openingBalance = 0.0;
-  string headerLine(70, headerLineChar);
-  string bodyLineLine(64, bodyLineChar);
-
-  cout << headerLine << endl;
-  cout << left << setw(4) << setfill(separator) << "==";
-
-  if (t_useMonthlyDeposit)
-  {
-    cout << left << setw(56) << setfill(separator) << "Airgead Banking: Yearly Balance w/o Monthly Deposit";
-  }
-  else
-  {
-    cout << left << setw(56) << setfill(separator) << "Airgead Banking: with Balance w/o Monthly Deposit";
-  }
-  cout << right << setw(4) << setfill(separator) << "==";
-  cout << endl;
-
-  cout << bodyLineLine << endl;
-  cout << left << setw(4) << setfill(separator) << "--";
-  cout << left << setw(columnWidth) << setfill(separator) << "YEAR";
-  cout << left << setw(columnWidth) << setfill(separator) << "BALANCE";
-  cout << left << setw(columnWidth) << setfill(separator) << "YEARLY INTEREST";
-  cout << right << setw(4) << setfill(separator) << "--";
-  cout << endl;
-  cout << bodyLineLine << endl;
-
-  for (int i = 0; i < investmentData.getYears(); ++i)
-  {
-    cout << left << setw(columnWidth) << setfill(separator) << (i + 1);
-    cout << left << setw(columnWidth) << setfill(separator) << investmentData.calculateMonthlyBalance(openingBalance, t_useMonthlyDeposit) ;
-    cout << left << setw(columnWidth) << setfill(separator) << investmentData.getAnnualInterestRate();
-  }
-
-  cout << headerLine << endl;
-  */
 
   return;
 }
@@ -251,11 +226,11 @@ int main()
     }
     else if (option == 2)
     {
-      displayMonthyReport(*investmentData, false);
+      displayReport(*investmentData, false);
     }
     else if (option == 3)
     {
-      displayMonthyReport(*investmentData, true);
+      displayReport(*investmentData, true);
     }
 
     initialPass = false;
