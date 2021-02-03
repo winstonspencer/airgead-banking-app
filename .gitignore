@@ -1,4 +1,8 @@
-.vscode
-.vscode/*
+.vscode/launch.json
+.vscode/tasks.json
+.gitignore
+src/main.dSYM/Contents/Info.plist
+.gitignore
 src/main
-src/InvestmentData
+.gitignore
+src/main.dSYM/Contents/Resources/DWARF/main

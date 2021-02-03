@@ -186,13 +186,19 @@ void displayMonthyReport(InvestmentData &investmentData, bool t_useMonthlyDeposi
 int main()
 {
 
-  // Decleare the option variable
+  // Decleare all function variables.
   int option;
+  bool initialPass = true;
   InvestmentData *investmentData = NULL;
 
   // While the option is not 1 - 4 display the menu
   do
   {
+
+    if(!initialPass){
+      cin.ignore();
+    }
+
     // Get the user option from the main menu
     option = displayMainMenu();
 
@@ -202,15 +208,17 @@ int main()
     }
     else if (option == 2)
     {
-      displayMonthyReport(false);
+      displayMonthyReport(*investmentData, false);
     }
     else if (option == 3)
     {
-      displayMonthyReport(true);
+      displayMonthyReport(*investmentData, true);
     }
 
     // Call the InvestmentData deconstructor
     delete investmentData;
+
+    initialPass = false;
 
     // Exit the application when the option is 4.
   } while (option != 4);
