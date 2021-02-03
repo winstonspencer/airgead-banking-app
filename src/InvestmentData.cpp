@@ -119,53 +119,24 @@ void InvestmentData::setYears(int t_years)
 }
 
 /**
-   * @brief Calaculates the monthly balance as: 
-   *          (Opening Balance + Deposited Amount) * calculateMonthlyInterestRate()
-   * 
-   * @param t_useMonthlyAmount Determines if the monthly amount should be used when 
-   *                           calculating the balance
-   * 
-   * @param t_openingBalance The opening balance
-   * 
-   * @return double 
-   */
-double InvestmentData::calculateMonthlyBalance(double t_openingBalance, bool t_useMonthlyAmount)
+ * @brief Calaculates the monthly interest rate.
+ *        The rate is calculated as: (m_annualInterestRate/100)/12
+ * 
+ * @param t_openingBalance 
+ * @return double 
+ */
+double InvestmentData::calculateMonthlyInterest(double t_openingBalance)
 {
-  // Declare and Initialize the monthly balance variable
-  double monthlyBalance = t_openingBalance;
-  ;
-  double interest = this->calculateMonthlyInterestRate();
+  // Declare and Initialize the monthlyInterestAmount variable
+  double monthlyInterestAmount = 0.0;
 
-  if (fabs(interest) > 0.0001)
+  //  Only calculate the interest IFF the interest rate is > 0% else return 0.
+  if (fabs(this->m_annualInterestRate) > 0.0001)
   {
-    if (t_useMonthlyAmount)
-    {
-      monthlyBalance = (monthlyBalance + this->m_monthlyDeplositAmount) + (monthlyBalance * this->calculateMonthlyInterestRate());
-    }
-    else
-    {
-      monthlyBalance = monthlyBalance + (monthlyBalance * this->calculateMonthlyInterestRate());
-    }
+    // Calculate the monthly interest rate.
+    monthlyInterestAmount = t_openingBalance * ((this->m_annualInterestRate / 100.0) / 12.0);
   }
 
-  // Return the calculated monthly balance.
-  return monthlyBalance;
-}
-
-/**
-   * @brief Calaculates the monthly interest rate.
-   *        The rate is calculated as: (Interest Rate/100)/12
-   * 
-   * @return double 
-   */
-double InvestmentData::calculateMonthlyInterestRate()
-{
-  // Declare and Initialize the monthlyInterestRate variable
-  double monthlyInterestRate = 0.0;
-
-  // Calculate the monthly interest rate.
-  monthlyInterestRate = ((this->m_annualInterestRate / 100.0) / 12.0);
-
-  // Return the calculated monthly interest rate.
-  return monthlyInterestRate;
+  // Return the calculated monthly interest amount.
+  return monthlyInterestAmount;
 }

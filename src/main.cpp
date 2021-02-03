@@ -16,8 +16,9 @@
 #include <iomanip>
 #include <iostream>
 #include <exception>
-#include "InvestmentData.h"
 #include "Table.h"
+#include "Formatter.h"
+#include "InvestmentData.h"
 
 // Use the standard namespance (std)
 using namespace std;
@@ -138,9 +139,9 @@ void collectInvestmentData(InvestmentData &investmentData)
     cout << "";
 
     // Get the user input within the trycatch
-    collectUserInput("** Enter Initial Investment Amount: ", initialInvestmentAmount);
-    collectUserInput("** Enter Monthly Deposit Amount: ", monthlyDepositAmount);
-    collectUserInput("** Enter Initial Annual Interest: ", annualInterest);
+    collectUserInput("** Enter Initial Investment Amount: $", initialInvestmentAmount);
+    collectUserInput("** Enter Monthly Deposit Amount: $", monthlyDepositAmount);
+    collectUserInput("** Enter Initial Annual Interest: %", annualInterest);
     collectUserInput("** Enter Years: ", years);
 
     investmentData.setInitialInvestmentAmount(initialInvestmentAmount);
@@ -166,7 +167,8 @@ void collectInvestmentData(InvestmentData &investmentData)
 void displayReport(InvestmentData &investmentData, bool t_useMonthlyDeposit)
 {
   // Declare function variables
-  double totalBalance;
+  double interestAmount = 0.0;
+  double totalBalance = 0.0;
   Table table;
 
   try
@@ -174,23 +176,43 @@ void displayReport(InvestmentData &investmentData, bool t_useMonthlyDeposit)
     totalBalance = investmentData.getInitialInvestmentAmount();
     table.addHeader(new Column("YEAR"));
     table.addHeader(new Column("BALANCE"));
-    table.addHeader(new Column("YEARLY INTEREST"));
+    table.addHeader(new Column("EARNED INTEREST"));
 
     for (int i = 0; i < investmentData.getYears(); ++i)
     {
+      // Create a new row
       Row row;
+
+      // Add the year to the first column.
       row.addColumn(Column(i + 1));
 
       for (int i = 0; i < 12; i++)
       {
-        totalBalance = investmentData.calculateMonthlyBalance(totalBalance, t_useMonthlyDeposit);
+        // Calculate the interest amount
+        interestAmount += investmentData.calculateMonthlyInterest(totalBalance);
+
+        // calculate the monthly balance
+        if (t_useMonthlyDeposit)
+        {
+          totalBalance = (totalBalance + investmentData.getMonthlyDepositAmount() + interestAmount);
+        }
+        else
+        {
+          totalBalance += interestAmount;
+        }
       }
 
-      row.addColumn(Column(fabs(totalBalance)));
-      row.addColumn(Column(fabs(investmentData.getAnnualInterestRate())));
+      // Add the balance to the row
+      row.addColumn(Column("$" + toString(fabs(totalBalance))));
+
+      // Add the interest to the row
+      row.addColumn(Column("$" + toString(fabs(interestAmount))));
+
+      // Add the row to the table
       table.addRow(row);
     }
 
+    // Display the table
     table.display();
   }
   catch (exception &e)

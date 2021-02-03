@@ -49,14 +49,6 @@ private:
   int m_years;
 
   /**
-   * @brief Calaculates the monthly interest rate.
-   *        The rate is calculated as: (m_annualInterestRate/100)/12
-   * 
-   * @return double 
-   */
-  double calculateMonthlyInterestRate();
-
-  /**
    * @brief The InvestmentData public class members & methods
    * 
    */
@@ -129,17 +121,12 @@ public:
   void setYears(int years);
 
   /**
-   * @brief Calaculates the monthly balance as: 
-   *          (Opening Balance + Deposited Amount) * calculateMonthlyInterestRate()
-   * 
-   * @param t_useMonthlyAmount Determines if the monthly amount should be used when 
-   *                           calculating the balance
-   * 
-   * @param t_openingBalance The opening balance
+   * @brief Calaculates the monthly interest rate.
+   *        The rate is calculated as: (m_annualInterestRate/100)/12
    * 
    * @return double 
    */
-  double calculateMonthlyBalance(double t_openingBalance, bool t_useMonthlyAmount);
+  double calculateMonthlyInterest(double t_openingBalance);
 };
 
 #endif
