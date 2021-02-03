@@ -16,6 +16,13 @@
 using namespace std;
 
 /**
+ * @brief Construct a new Row object
+ */
+Row::Row(){
+  this->m_columns.clear();
+}
+
+/**
  * @brief Destroy the Row object.
  * 
  */
@@ -52,13 +59,14 @@ int Row::getLength()
  */
 Column Row::getColumn(int i)
 {
-  Column * c = NULL;
+  Column c;
 
-  if(i < this->m_columns.size()){
-    *c = this->m_columns.at(i);
+  if (i < this->m_columns.size())
+  {
+    c = this->m_columns.at(i);
   }
-  
-  return *c;
+
+  return c;
 }
 
 /**

@@ -26,13 +26,14 @@ using namespace std;
  */
 Table::Table()
 {
-  this->m_tableWidth = 72;
+  this->m_tableWidth = 69;
   this->m_columnWidth = 20;
-  this->m_rowPrefixSize = 4;
-  this->m_rowPostfixSize = 4;
+  this->m_rowPrefixSize = 2;
+  this->m_rowPostfixSize = 2;
   this->m_headerDivChar = '=';
   this->m_bodyDivChar = '-';
   this->m_columnSeperator = '|';
+  this->m_filler = ' ';
   this->m_header.clear();
   this->m_rows.clear();
 }
@@ -50,6 +51,7 @@ Table::~Table()
   this->m_headerDivChar = ' ';
   this->m_bodyDivChar = ' ';
   this->m_columnSeperator = ' ';
+  this->m_filler = ' ';
   this->m_header.clear();
   this->m_rows.clear();
 }
@@ -95,7 +97,7 @@ void Table::addRow(Column t_columns[])
   int columnLen = sizeof(*t_columns) / sizeof(Column);
   Row r;
 
-  for (int i = 0; i < columnLen; i++)
+  for (int i = 0; i < columnLen; ++i)
   {
     r.addColumn(t_columns[i]);
   }
@@ -109,8 +111,11 @@ void Table::addRow(Column t_columns[])
    */
 void Table::display()
 {
+  this->printDiv(true);
   this->printHeader();
+  this->printDiv(false);
   this->printBody();
+  this->printDiv(false);
 }
 
 /**
@@ -124,8 +129,6 @@ void Table::clear()
 
 void Table::printDiv(bool header)
 {
-  string *div;
-
   if (header)
   {
     cout << left << setw(this->m_tableWidth) << setfill(this->m_headerDivChar) << this->m_headerDivChar << endl;
@@ -135,29 +138,41 @@ void Table::printDiv(bool header)
     cout << left << setw(this->m_tableWidth) << setfill(this->m_bodyDivChar) << this->m_bodyDivChar << endl;
   }
 
-  cout << div << endl;
-  
+  return;
 }
 
-void Table::printRow(Row row)
+void Table::printRow(bool t_header, Row t_row)
 {
+  Column column;
+  cout << left << setw(2) << setfill(' ') << this->m_columnSeperator;
+
+  for (int i = 0; i < t_row.getLength(); ++i)
+  {
+    column = t_row.getColumn(i);
+    cout << left << setw(this->m_columnWidth) << setfill(this->m_filler) << column.getValue();
+
+    if (i < (t_row.getLength() - 1))
+    {
+      cout << left << setw(2) << setfill(' ') << this->m_columnSeperator;
+    }
+  }
+
+  cout << right << setw(3) << setfill(' ') << this->m_columnSeperator;
+  cout << endl;
+
+  return;
 }
 
 void Table::printHeader()
 {
 
-  this->printDiv(true);
-  for (int i = 0; i < this->m_header.getLength(); i++)
-  {
-    this->printRow(this->m_rows.at(i));
-  }
-  this->printDiv(true);
+  this->printRow(true, this->m_header);
 }
 
 void Table::printBody()
 {
-  for (int i = 0; i < this->m_rows.size(); i++)
+  for (int i = 0; i < this->m_rows.size(); ++i)
   {
-    this->printRow(this->m_rows.at(i));
+    this->printRow(false, this->m_rows.at(i));
   }
 }

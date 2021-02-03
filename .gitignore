@@ -9,3 +9,5 @@ src/main.dSYM/Contents/Resources/DWARF/main
 .vscode/c_cpp_properties.json
 .vscode/settings.json
 src/InvestmentData
+src/Row
+src/Table

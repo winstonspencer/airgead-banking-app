@@ -41,11 +41,12 @@ private:
   char m_headerDivChar;
   char m_bodyDivChar;
   char m_columnSeperator;
+  char m_filler;
   Row m_header;
   vector<Row> m_rows;
   
-  void printDiv(bool header);
-  void printRow(Row row);
+  void printDiv(bool t_header);
+  void printRow(bool t_header, Row t_row);
   void printHeader();
   void printBody();
 
