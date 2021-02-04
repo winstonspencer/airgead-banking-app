@@ -31,7 +31,6 @@ int main()
   auto investmentData = make_unique<InvestmentData>();
   Menu menu;
 
-
   // While the option is not 1 - 4 display the menu
   do
   {
@@ -56,7 +55,6 @@ int main()
     // Exit the application when the option is 4.
   } while (option != 4);
 
-  
   menu.displayExitScreen();
   return 0;
 }

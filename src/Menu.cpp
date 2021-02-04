@@ -118,6 +118,8 @@ void Menu::collectInvestmentData(InvestmentData &investmentData)
 
   cout << "*************************************************************" << endl;
 
+  // Display the continue screen
+  this->displayContinueMenu();
   return;
 }
 
@@ -218,6 +220,9 @@ void Menu::displayReport(InvestmentData &investmentData, bool t_useMonthlyDeposi
 
     // Display the table
     table.display();
+
+    // Display the continue screen
+    this->displayContinueMenu();
   }
   catch (exception &e)
   {
@@ -231,7 +236,7 @@ void Menu::displayReport(InvestmentData &investmentData, bool t_useMonthlyDeposi
    * @brief Display the continue menu.
    * 
    */
-void Menu::displayConinuteMenu()
+void Menu::displayContinueMenu()
 {
 
   // Declare the user input variable.

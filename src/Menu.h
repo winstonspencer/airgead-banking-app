@@ -37,6 +37,12 @@ private:
    */
   void collectUserInput(string userPrompt, double &value);
 
+  /**
+   * @brief Display the continue menu.
+   * 
+   */
+  void displayContinueMenu();
+
 public:
   /**
    * @brief Displays the main menu
@@ -52,12 +58,6 @@ public:
    * @param t_useMonthlyDeposit 
    */
   void displayReport(InvestmentData &investmentData, bool t_useMonthlyDeposit);
-
-  /**
-   * @brief Display the continue menu.
-   * 
-   */
-  void displayConinuteMenu();
 
   /**
    * @brief Display the exit screen
