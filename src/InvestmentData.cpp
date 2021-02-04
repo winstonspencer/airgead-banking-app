@@ -140,3 +140,42 @@ double InvestmentData::calculateMonthlyInterest(double t_openingBalance)
   // Return the calculated monthly interest amount.
   return monthlyInterestAmount;
 }
+
+/**
+ * @brief Calculates the yearly interest and total investment balance.
+ * 
+ * @param t_yearlyInterestAmount The yearly interest
+ * @param t_openingBalance the opening balance
+ * @param t_useMonthlyDeposit flag to determine if the monthly deposito value should be used.
+ */
+void InvestmentData::calculateYearlyBalance(double &t_yearlyInterestAmount, double & t_openingBalance, bool t_useMonthlyDeposit)
+{
+  // Declare function variables
+  double monthlyInterest;
+
+  // Initialze the total interest to 0 at the beginning of each year.
+  t_yearlyInterestAmount = 0.0;
+
+  // Loop through all the months in the year to calculate
+  // the monthly interest and balance.
+  for (int currentMonth = 0; currentMonth < 12; ++currentMonth)
+  {
+
+    // Get the starting balance.
+    if (t_useMonthlyDeposit)
+    {
+      t_openingBalance += this->getMonthlyDepositAmount();
+    }
+
+    // Calculate the monthly interest amount
+    monthlyInterest = this->calculateMonthlyInterest(t_openingBalance);
+
+    // Calculate the year to date interest
+    t_yearlyInterestAmount += monthlyInterest;
+
+    // Calculate the year to date balance
+    t_openingBalance += monthlyInterest;
+  }
+
+  return;
+}

@@ -127,6 +127,15 @@ public:
    * @return double 
    */
   double calculateMonthlyInterest(double t_openingBalance);
+
+  /**
+   * @brief Calculates the yearly interest and total investment balance.
+   * 
+   * @param t_yearlyInterestAmount The yearly interest
+   * @param t_openingBalance the opening balance
+   * @param t_useMonthlyDeposit flag to determine if the monthly deposito value should be used.
+   */
+  void calculateYearlyBalance(double & t_yearlyInterestAmount, double & t_openingBalance, bool t_useMonthlyDeposit);
 };
 
 #endif

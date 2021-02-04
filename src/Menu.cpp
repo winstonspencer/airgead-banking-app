@@ -181,11 +181,9 @@ int Menu::displayMainMenu()
  */
 void Menu::displayReport(InvestmentData &investmentData, bool t_useMonthlyDeposit)
 {
-  // Declare function variables
-  int currentMonth = 1;
+  // Declare and initialize function variables
   double totalBalance = 0.0;
   double totalInterest = 0.0;
-  double interestAmount = 0.0;
   Table table;
 
   try
@@ -200,35 +198,13 @@ void Menu::displayReport(InvestmentData &investmentData, bool t_useMonthlyDeposi
 
     for (int i = 0; i < investmentData.getYears(); ++i)
     {
+      investmentData.calculateYearlyBalance(totalInterest, totalBalance, t_useMonthlyDeposit);
+
       // Create a new row
       Row row;
 
       // Add the year to the first column.
       row.addColumn(Column(i + 1));
-
-      // Set the total interest to 0 at the beginning of each year.
-      totalInterest = 0.0;
-
-      // Loop through all the months in the year to calculate 
-      // the monthly interest and balance.
-      for (currentMonth = 0; currentMonth < 12; ++currentMonth)
-      {
-
-        // Get the starting balance.
-        if (t_useMonthlyDeposit)
-        {
-          totalBalance += investmentData.getMonthlyDepositAmount();
-        }
-
-        // Calculate the interest amount
-        interestAmount = investmentData.calculateMonthlyInterest(totalBalance);
-
-        // Keep the total interest
-        totalInterest += interestAmount;
-
-        // Add the interest to the balance
-        totalBalance += interestAmount;
-      }
 
       // Add the balance to the row
       row.addColumn(Column("$" + toString(fabs(totalBalance))));
