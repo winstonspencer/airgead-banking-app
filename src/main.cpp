@@ -13,6 +13,7 @@
 #include <string>
 #include <memory>
 #include "Menu.h"
+#include "InvestmentData.h"
 
 // Use the standard namespance (std)
 using namespace std;
@@ -28,7 +29,7 @@ int main()
   // Decleare all function variables.
   int option;
   bool initialPass = true;
-  auto investmentData = make_unique<InvestmentData>();
+  InvestmentData* investmentData = new InvestmentData();
   Menu menu;
 
   // While the option is not 1 - 4 display the menu
@@ -56,5 +57,6 @@ int main()
   } while (option != 4);
 
   menu.displayExitScreen();
+  delete investmentData;
   return 0;
 }
